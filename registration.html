@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registration Page</title>
+  <link rel="stylesheet" href="registration.css" />
+</head>
+<body>
+  <div class="total">
+    <div class="container">
+      <h1>Registration Form</h1>
+      <form action="post">
+        <div class="center">
+          <label for="First Name">Enter your name:</label>
+          <input type="text" id="First Name" placeholder="Enter your name" />
+        </div>
+        <div class="center">
+          <label for="Last Name">Enter last name:</label>
+          <input type="text" id="Last Name" placeholder="Enter your last name" />
+        </div>
+        <div class="center gender-container">
+          <label for="Gender">Gender:</label>
+          <input type="radio" id="male" name="Gender" value="male" />
+          <label for="male">Male</label>
+          <input type="radio" id="female" name="Gender" value="female" />
+          <label for="female">Female</label>
+          <input type="radio" id="other" name="Gender" value="other" />
+          <label for="other">Other</label>
+        </div>
+        <div class="center">
+          <label for="Birth Date">Date of birth:</label>
+          <input type="date" name="Birth Date" id="Birth Date" />
+        </div>
+        <div class="center">
+          <label for="AADHAAR NUMBER">Enter Aadhaar number:</label>
+          <input type="text" name="aadhaar" id="AADHAAR NUMBER" placeholder="Enter your Aadhaar number" />
+        </div>
+        <div class="center">
+          <label for="user name">Create user name:</label>
+          <input type="text" name="user name" id="user name" placeholder="Create your user name" />
+        </div>
+        <div class="center">
+          <label for="password">Create password:</label>
+          <input type="password" name="password" id="password" placeholder="Create your password" />
+        </div>
+        <div class="center">
+          <label for="confirm password">Confirm password:</label>
+          <input type="password" name="confirm password" id="confirm password" placeholder="Confirm your password" />
+        </div>
+        <div class="center">
+          <button type="submit">Submit</button>
+        </div>
+        <div class="success-message">Form submitted successfully!</div>
+      </form>
+    </div>
+  </div>
+  <script src="regirstation.js"></script>
+</body>
+</html>
