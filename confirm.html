@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm</title>
+    <link rel="stylesheet" href="confirm.css">
+</head>
+
+<body>
+    <h1>Result</h1>
+    <div id="result"></div>
+
+    <script>
+        // Retrieve the stored data
+        var selectedOption = localStorage.getItem('selectedOption');
+
+        // Display the result
+        var resultDiv = document.getElementById('result');
+        if (selectedOption) {
+            resultDiv.innerText = 'You voted for: ' + selectedOption;
+        } else {
+            resultDiv.innerText = 'No vote data found.';
+        }
+    </script>
+</body>
+
+</html>

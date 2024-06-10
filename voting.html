@@ -7,12 +7,13 @@
     <title>Voting</title>
     <link rel="stylesheet" href="voting.css">
 </head>
+
 <body>
     <h1 style="color: blueviolet;">Voting Ballot</h1>
     <div class="cont">
-        <form action="post">
+        <form id="votingForm">
             <div class="bjp">
-                <input type="radio" name="vote" id="bjp" value="bjp">
+                <input type="radio" name="vote" id="bjp" value="BJP">
                 <label for="bjp" style="color: rgb(241, 98, 46);">BJP</label>
                 <img src="bjp.svg.png" height="20px" alt="bjp img">
             </div>
@@ -42,10 +43,24 @@
                 <img src="nota.jpg" height="23px" alt="nota img">
             </div>
             <div class="submit">
-                <button type="submit">Submit</button>
+                <button type="button" onclick="submitForm()">Submit</button>
             </div>
         </form>
     </div>
+
+    <script>
+        function submitForm() {
+            var form = document.getElementById('votingForm');
+            var formData = new FormData(form);
+            var selectedOption = formData.get('vote');
+
+            // Store the selected option in local storage
+            localStorage.setItem('selectedOption', selectedOption);
+
+            // Redirect to a new page
+            window.location.href = 'confirm.html';
+        }
+    </script>
 </body>
 
 </html>
