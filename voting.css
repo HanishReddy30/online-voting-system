@@ -8,7 +8,7 @@
     font-family:'Times New Roman', Times, serif;
     font-size: 20px;
     background-color: #f9f9f9;
-    border-radius: 20px;
+    
     
 }
 .submit button{
@@ -24,4 +24,23 @@ body{
     align-items: center;
     justify-content: center;
     background-color: white;
+    
+}
+.bjp{
+    padding: 3px;
+}
+.congress{
+padding: 3px
+}
+.brs{
+padding: 3px
+}
+.janasena{
+padding: 3px
+}
+.jsrcp{
+padding: 3px
+}
+.nota{
+padding: 3px
 }
