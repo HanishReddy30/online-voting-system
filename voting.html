@@ -47,20 +47,14 @@
             </div>
         </form>
     </div>
-
     <script>
         function submitForm() {
             var form = document.getElementById('votingForm');
             var formData = new FormData(form);
             var selectedOption = formData.get('vote');
-
-            // Store the selected option in local storage
             localStorage.setItem('selectedOption', selectedOption);
-
-            // Redirect to a new page
             window.location.href = 'confirm.html';
         }
     </script>
 </body>
-
 </html>

@@ -13,11 +13,8 @@
     <div id="result"></div>
 
     <script>
-        // Retrieve the stored data
-        var selectedOption = localStorage.getItem('selectedOption');
-
-        // Display the result
-        var resultDiv = document.getElementById('result');
+         var selectedOption = localStorage.getItem('selectedOption');
+         var resultDiv = document.getElementById('result');
         if (selectedOption) {
             resultDiv.innerText = 'You voted for: ' + selectedOption;
         } else {
