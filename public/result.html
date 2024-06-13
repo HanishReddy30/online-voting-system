@@ -3,14 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Result Page</title>
-    <link rel="stylesheet" href="result.css">
+    <title>Results Page</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="total">
+    <div class="container">
         <h1>Voting Results</h1>
-        <div id="resultsContainer" class="center"></div>
+        <div id="results"></div>
     </div>
-    <script src="result.js"></script>
+    <script>
+        fetch('/results')
+            .then(response => response.json())
+            .then(data => {
+                const resultsDiv = document.getElementById('results');
+                data.forEach(result => {
+                    const p = document.createElement('p');
+                    p.textContent = `${result._id}: ${result.count} votes`;
+                    resultsDiv.appendChild(p);
+                });
+            });
+    </script>
 </body>
 </html>

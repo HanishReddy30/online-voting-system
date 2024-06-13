@@ -4,56 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Page</title>
-    <link rel="stylesheet" href="registration.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="total">
-        <div class="container">
-            <h1>Registration Form</h1>
-            <form id="registrationForm" action="/register" method="POST">
-                <div class="center">
-                    <label for="FirstName">Enter your name:</label>
-                    <input type="text" id="FirstName" name="firstName" placeholder="Enter your name" required />
-                </div>
-                <div class="center">
-                    <label for="LastName">Enter last name:</label>
-                    <input type="text" id="LastName" name="lastName" placeholder="Enter your last name" required />
-                </div>
-                <div class="center gender-container">
-                    <label for="Gender">Gender:</label>
-                    <input type="radio" id="male" name="gender" value="male" required />
-                    <label for="male">Male</label>
-                    <input type="radio" id="female" name="gender" value="female" required />
-                    <label for="female">Female</label>
-                    <input type="radio" id="other" name="gender" value="other" required />
-                    <label for="other">Other</label>
-                </div>
-                <div class="center">
-                    <label for="BirthDate">Date of birth:</label>
-                    <input type="date" name="birthDate" id="BirthDate" required />
-                </div>
-                <div class="center">
-                    <label for="aadhaar">Enter Aadhaar number:</label>
-                    <input type="text" name="aadhaar" id="aadhaar" placeholder="Enter your Aadhaar number" required />
-                </div>
-                <div class="center">
-                    <label for="username">Create user name:</label>
-                    <input type="text" name="username" id="username" placeholder="Create your user name" required />
-                </div>
-                <div class="center">
-                    <label for="password">Create password:</label>
-                    <input type="password" name="password" id="password" placeholder="Create your password" required />
-                </div>
-                <div class="center">
-                    <label for="confirmpassword">Confirm password:</label>
-                    <input type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm your password" required />
-                </div>
-                <div class="center">
-                    <button type="submit">Submit</button>
-                </div>
-            </form>
-        </div>
+    <div class="container">
+        <h1>Registration Form</h1>
+        <form action="/register" method="POST">
+            <label for="firstName">Enter your name:</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Enter your name" required>
+
+            <label for="lastName">Enter last name:</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+
+            <label for="gender">Gender:</label>
+            <input type="radio" id="male" name="gender" value="male" required>
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="gender" value="female" required>
+            <label for="female">Female</label>
+            <input type="radio" id="other" name="gender" value="other" required>
+            <label for="other">Other</label>
+
+            <label for="birthDate">Date of birth:</label>
+            <input type="date" name="birthDate" id="birthDate" required>
+
+            <label for="aadhaar">Enter Aadhaar number:</label>
+            <input type="text" name="aadhaar" id="aadhaar" placeholder="Enter your Aadhaar number" required>
+
+            <label for="username">Create username:</label>
+            <input type="text" name="username" id="username" placeholder="Create your username" required>
+
+            <label for="password">Create password:</label>
+            <input type="password" name="password" id="password" placeholder="Create your password" required>
+
+            <label for="confirmpassword">Confirm password:</label>
+            <input type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm your password" required>
+
+            <button type="submit">Submit</button>
+        </form>
     </div>
-    <script src="registration.js"></script>
 </body>
 </html>

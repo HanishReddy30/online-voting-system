@@ -7,8 +7,15 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://localhost:27017/votingDB', { useNewUrlParser: true, useUnifiedTopology: true });
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/votingDB')
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => {
+      console.log('MongoDB connection error:', err);
+      process.exit(1); // Exit the process with a failure code
+  });
 
+// Define Mongoose Schemas and Models
 const userSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
@@ -27,7 +34,9 @@ const voteSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 const Vote = mongoose.model('Vote', voteSchema);
 
-app.post('/register', (req, res) => {
+// Registration endpoint
+app.post('/register', async (req, res) => {
+    console.log('Register endpoint hit');
     const newUser = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -37,35 +46,41 @@ app.post('/register', (req, res) => {
         username: req.body.username,
         password: req.body.password
     });
-    newUser.save((err) => {
-        if (err) {
-            console.log(err);
-            res.send('Error in registration.');
-        } else {
-            res.redirect('/login.html');
-        }
-    });
+
+    try {
+        await newUser.save();
+        console.log('User registered successfully');
+        res.redirect('/login.html');
+    } catch (err) {
+        console.log('Error in registration:', err);
+        res.send('Error in registration.');
+    }
 });
 
-app.post('/login', (req, res) => {
+// Login endpoint
+app.post('/login', async (req, res) => {
+    console.log('Login endpoint hit');
     const username = req.body.username;
     const password = req.body.password;
 
-    User.findOne({ username: username, password: password }, (err, foundUser) => {
-        if (err) {
-            console.log(err);
-            res.send('Error in login.');
+    try {
+        const foundUser = await User.findOne({ username: username, password: password });
+        if (foundUser) {
+            console.log('User logged in successfully');
+            res.redirect('/voting.html');
         } else {
-            if (foundUser) {
-                res.redirect('/voting.html');
-            } else {
-                res.send('Invalid username or password.');
-            }
+            console.log('Invalid username or password');
+            res.send('Invalid username or password.');
         }
-    });
+    } catch (err) {
+        console.log('Error in login:', err);
+        res.send('Error in login.');
+    }
 });
 
-app.post('/vote', (req, res) => {
+// Vote endpoint
+app.post('/vote', async (req, res) => {
+    console.log('Vote endpoint hit');
     const username = req.body.username;
     const userVote = req.body.vote;
 
@@ -74,34 +89,36 @@ app.post('/vote', (req, res) => {
         vote: userVote
     });
 
-    newVote.save((err) => {
-        if (err) {
-            console.log(err);
-            res.send('Error in voting.');
-        } else {
-            res.redirect('/result.html');
-        }
-    });
+    try {
+        await newVote.save();
+        console.log('Vote recorded successfully');
+        res.redirect('/results.html');
+    } catch (err) {
+        console.log('Error in voting:', err);
+        res.send('Error in voting.');
+    }
 });
 
-app.get('/results', (req, res) => {
-    Vote.aggregate([
-        {
-            $group: {
-                _id: "$vote",
-                count: { $sum: 1 }
+// Results endpoint
+app.get('/results', async (req, res) => {
+    console.log('Results endpoint hit');
+    try {
+        const results = await Vote.aggregate([
+            {
+                $group: {
+                    _id: "$vote",
+                    count: { $sum: 1 }
+                }
             }
-        }
-    ]).exec((err, results) => {
-        if (err) {
-            console.log(err);
-            res.send('Error in fetching results.');
-        } else {
-            res.json(results);
-        }
-    });
+        ]);
+        res.json(results);
+    } catch (err) {
+        console.log('Error in fetching results:', err);
+        res.send('Error in fetching results.');
+    }
 });
 
+// Start the server
 app.listen(3000, () => {
     console.log('Server started on port 3000');
 });
