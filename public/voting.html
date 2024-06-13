@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Page</title>
+    <link rel="stylesheet" href="voting.css">
+</head>
+<body>
+    <div class="total">
+        <h1>Vote for Your Party</h1>
+        <form id="votingForm" action="/vote" method="POST">
+            <div class="center">
+                <input type="radio" id="bjp" name="vote" value="bjp" required />
+                <label for="bjp"><img src="images/bjp.svg.png" alt="BJP" /></label>
+
+                <input type="radio" id="congress" name="vote" value="congress" required />
+                <label for="congress"><img src="images/congress.png" alt="Congress" /></label>
+
+                <input type="radio" id="brs" name="vote" value="brs" required />
+                <label for="brs"><img src="images/brs.png" alt="BRS" /></label>
+
+                <input type="radio" id="jana" name="vote" value="jana" required />
+                <label for="jana"><img src="images/jana.jpeg" alt="Jana Sena" /></label>
+
+                <input type="radio" id="ysrcp" name="vote" value="ysrcp" required />
+                <label for="ysrcp"><img src="images/YSRCP-1-1.jpg" alt="YSRCP" /></label>
+
+                <input type="radio" id="nota" name="vote" value="nota" required />
+                <label for="nota"><img src="images/nota.jpg" alt="NOTA" /></label>
+            </div>
+            <div class="center">
+                <button type="submit">Submit Vote</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
