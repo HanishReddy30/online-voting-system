@@ -1,0 +1,59 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Main container styling */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styling */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 2.5em;
+}
+
+/* Results styling */
+#results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Individual result item styling */
+#results p {
+    background-color: #e0e0e0;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    #results p {
+        font-size: 1em;
+        padding: 10px;
+    }
+}

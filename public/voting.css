@@ -1,6 +1,6 @@
 .cont{
     height:50vh;
-    width: 50vw;
+    width: 40vw;
     border: 2px solid black;
     display: flex;
     align-items: center;
@@ -8,7 +8,7 @@
     font-family:'Times New Roman', Times, serif;
     font-size: 20px;
     background-color: #f9f9f9;
-    
+    border-radius: 20px;
     
 }
 .submit button{

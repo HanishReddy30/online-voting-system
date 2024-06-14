@@ -1,128 +1,84 @@
-/* General Styles */
+/* registration.css */
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+  background-color: #f0f4f8;
   margin: 0;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-}
-
-h1 {
-  text-align: center;
-  color: #333;
-}
-
-.total {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  max-width: 600px;
-  margin: auto;
+  min-height: 100vh;
 }
 
 .container {
   background-color: #fff;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 20px 40px;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
+  width: 90%;
+  max-width: 500px;
+  text-align: left;
 }
 
-.center {
-  margin: 10px 0;
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #004080;
+  text-align: center;
 }
 
 label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   color: #333;
-  font-weight: 600;
+  font-weight: bold;
 }
 
 input[type="text"],
-input[type="password"],
-input[type="date"] {
-  width: 100%;
+input[type="date"],
+input[type="password"] {
+  width: calc(100% - 20px);
   padding: 10px;
-  margin: 5px 0 15px 0;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  box-sizing: border-box;
-  transition: all 0.3s;
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="date"]:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
-
-.gender-container {
-  display: flex;
-  align-items: center;
-}
-
-.gender-container label {
-  margin: 0 10px 0 5px;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 input[type="radio"] {
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
-button {
+.gender-label {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+button[type="submit"] {
   width: 100%;
+  padding: 10px;
   background-color: #007bff;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-button:hover {
+button[type="submit"]:hover {
   background-color: #0056b3;
 }
 
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: -10px;
-  margin-bottom: 10px;
-  display: none;
-}
-
-.success-message {
-  color: green;
-  font-size: 16px;
-  text-align: center;
-  display: none;
-}
-
-/* Responsive Design */
-@media screen and (max-width: 400px) {
+@media (max-width: 600px) {
   .container {
-    width: 90%;
+      padding: 20px;
   }
 
-  label {
-    font-size: 14px;
+  h1 {
+      font-size: 20px;
   }
 
-  input[type="text"],
-  input[type="password"],
-  input[type="date"] {
-    font-size: 14px;
-  }
-
-  button {
-    font-size: 16px;
+  button[type="submit"] {
+      font-size: 14px;
   }
 }

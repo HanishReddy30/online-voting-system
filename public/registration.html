@@ -17,12 +17,14 @@
             <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
 
             <label for="gender">Gender:</label>
-            <input type="radio" id="male" name="gender" value="male" required>
-            <label for="male">Male</label>
-            <input type="radio" id="female" name="gender" value="female" required>
-            <label for="female">Female</label>
-            <input type="radio" id="other" name="gender" value="other" required>
-            <label for="other">Other</label>
+            <div>
+                <input type="radio" id="male" name="gender" value="male" required>
+                <label for="male" class="gender-label">Male</label>
+                <input type="radio" id="female" name="gender" value="female" required>
+                <label for="female" class="gender-label">Female</label>
+                <input type="radio" id="other" name="gender" value="other" required>
+                <label for="other" class="gender-label">Other</label>
+            </div>
 
             <label for="birthDate">Date of birth:</label>
             <input type="date" name="birthDate" id="birthDate" required>
