@@ -11,6 +11,9 @@
     <h1 style="color: blueviolet;">Voting Ballot</h1>
     <div class="cont">
         <form action="/vote" method="POST">
+            <!-- Ensure this hidden input exists to pass the username -->
+            <input type="hidden" name="username" value="<!-- Insert Username Here -->">
+            
             <div class="bjp">
                 <input type="radio" name="vote" id="bjp" value="bjp" required>
                 <label for="bjp" style="color: rgb(241, 98, 46);">BJP</label>
