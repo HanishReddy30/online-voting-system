@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="login.css" />
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
     <div class="total">
@@ -16,21 +16,44 @@
                 <h1>Login:</h1>
                 <h4>Don't have an account?</h4>
                 <a href="registration.html">Sign Up</a>
-                <form action="/login" method="POST">
+                <form id="loginForm">
                     <div class="center">
                         <label for="username">Enter Username:</label>
-                        <input type="text" name="username" id="username" placeholder="Enter username" required />
+                        <input type="text" name="username" id="username" placeholder="Enter username" required>
                     </div>
                     <div class="center">
                         <label for="password">Enter Password:</label>
-                        <input type="password" name="password" id="password" placeholder="Enter password" required />
+                        <input type="password" name="password" id="password" placeholder="Enter password" required>
                     </div>
                     <div class="center">
                         <button type="submit">Login</button>
                     </div>
+                    <div class="error" id="loginError"></div>
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Clear previous errors
+            document.getElementById('loginError').textContent = '';
+
+            const formData = new FormData(this);
+            const response = await fetch('/login', {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                document.getElementById('loginError').textContent = errorText;
+            } else {
+                window.location.href = '/voting.html';
+            }
+        });
+    </script>
 </body>
 </html>

@@ -2,10 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+const session = require('express-session');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: false
+}));
 
 mongoose.connect('mongodb://localhost:27017/votingDB')
   .then(() => console.log('MongoDB connected'))
@@ -25,7 +32,7 @@ const userSchema = new mongoose.Schema({
 });
 
 const voteSchema = new mongoose.Schema({
-    username: String,
+    username: { type: String, unique: true },
     vote: String
 });
 
@@ -88,25 +95,46 @@ app.post('/register', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
+
     try {
         const foundUser = await User.findOne({ username, password });
-        if (foundUser) {
-            console.log('User logged in successfully');
-            res.redirect('/voting.html');
-        } else {
-            console.log('Invalid username or password');
-            res.status(400).send('Invalid username or password.');
+
+        if (!foundUser) {
+            return res.status(400).send('Invalid username or password.');
         }
+
+        const existingVote = await Vote.findOne({ username });
+
+        if (existingVote) {
+            return res.status(400).send('You have already voted.');
+        }
+
+        req.session.username = username;
+        console.log('User logged in successfully');
+        res.sendStatus(200);
     } catch (err) {
         console.log('Error in login:', err);
         res.status(500).send('Error in login.');
     }
 });
 
+
 app.post('/vote', async (req, res) => {
-    const { username, vote } = req.body;
-    const newVote = new Vote({ username, vote });
+    const { vote } = req.body;
+    const username = req.session.username;
+
+    if (!username) {
+        return res.status(403).send('You must be logged in to vote.');
+    }
+
     try {
+        const existingVote = await Vote.findOne({ username });
+
+        if (existingVote) {
+            return res.status(400).send('You have already voted.');
+        }
+
+        const newVote = new Vote({ username, vote });
         await newVote.save();
         console.log('Vote recorded successfully');
         res.redirect(`/vote-confirmation?username=${encodeURIComponent(username)}&vote=${encodeURIComponent(vote)}`);
