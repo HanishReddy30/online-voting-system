@@ -129,7 +129,7 @@ app.get('/vote-confirmation', (req, res) => {
         </head>
         <body>
             <h1 style="color: blueviolet;">Vote Confirmation</h1>
-            <p>Thank you, ${username}. Your vote for <strong>${vote}</strong> has been recorded successfully.</p>
+            <h2>Thank you, ${username}. Your vote for <strong>${vote}</strong> has been recorded successfully.</h2>
         </body>
         </html>
     `);
