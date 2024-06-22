@@ -5,16 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Page</title>
     <link rel="stylesheet" href="registration.css">
+    <style>
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Registration Form</h1>
-        <form action="/register" method="POST">
+        <form id="registrationForm" method="POST">
             <label for="firstName">Enter your name:</label>
             <input type="text" id="firstName" name="firstName" placeholder="Enter your name" required>
+            <div class="error" id="firstNameError"></div>
 
             <label for="lastName">Enter last name:</label>
             <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required>
+            <div class="error" id="lastNameError"></div>
 
             <label for="gender">Gender:</label>
             <div>
@@ -25,24 +33,71 @@
                 <input type="radio" id="other" name="gender" value="other" required>
                 <label for="other" class="gender-label">Other</label>
             </div>
+            <div class="error" id="genderError"></div>
 
             <label for="birthDate">Date of birth:</label>
             <input type="date" name="birthDate" id="birthDate" required>
+            <div class="error" id="birthDateError"></div>
 
             <label for="aadhaar">Enter Aadhaar number:</label>
             <input type="text" name="aadhaar" id="aadhaar" placeholder="Enter your Aadhaar number" required>
+            <div class="error" id="aadhaarError"></div>
 
             <label for="username">Create username:</label>
             <input type="text" name="username" id="username" placeholder="Create your username" required>
+            <div class="error" id="usernameError"></div>
 
             <label for="password">Create password:</label>
             <input type="password" name="password" id="password" placeholder="Create your password" required>
+            <div class="error" id="passwordError"></div>
 
             <label for="confirmpassword">Confirm password:</label>
             <input type="password" name="confirmpassword" id="confirmpassword" placeholder="Confirm your password" required>
+            <div class="error" id="confirmpasswordError"></div>
 
             <button type="submit">Submit</button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Clear previous errors
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+            const formData = new FormData(this);
+            const birthDate = new Date(formData.get('birthDate'));
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            const monthDifference = today.getMonth() - birthDate.getMonth();
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+
+            if (age < 18) {
+                document.getElementById('birthDateError').textContent = 'You must be at least 18 years old.';
+                return;
+            }
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    body: new URLSearchParams(formData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    for (const [key, message] of Object.entries(errorData.errors)) {
+                        document.getElementById(`${key}Error`).textContent = message;
+                    }
+                } else {
+                    window.location.href = '/login.html'; // Redirect on successful registration
+                }
+            } catch (err) {
+                console.error('Error in form submission', err);
+            }
+        });
+    </script>
 </body>
 </html>

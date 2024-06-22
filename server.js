@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const app = express();
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -18,8 +19,8 @@ const userSchema = new mongoose.Schema({
     lastName: String,
     gender: String,
     birthDate: String,
-    aadhaar: String,
-    username: String,
+    aadhaar: { type: String, unique: true },
+    username: { type: String, unique: true },
     password: String
 });
 
@@ -32,68 +33,91 @@ const User = mongoose.model('User', userSchema);
 const Vote = mongoose.model('Vote', voteSchema);
 
 app.post('/register', async (req, res) => {
-    console.log('Register endpoint hit');
+    const { firstName, lastName, gender, birthDate, aadhaar, username, password, confirmpassword } = req.body;
+    const errors = {};
+
+    // Server-side validation
+    if (!firstName.trim()) errors.firstName = 'First name is required.';
+    if (!lastName.trim()) errors.lastName = 'Last name is required.';
+    if (!gender) errors.gender = 'Please select your gender.';
+    if (!birthDate) errors.birthDate = 'Date of birth is required.';
+    if (!aadhaar.trim() || !/^\d{12}$/.test(aadhaar)) errors.aadhaar = 'Aadhaar number must be 12 digits.';
+    if (!username.trim()) errors.username = 'Username is required.';
+    if (!password.trim()) errors.password = 'Password is required.';
+    if (password !== confirmpassword) errors.confirmpassword = 'Passwords do not match.';
+
+    const birthDateObj = new Date(birthDate);
+    const today = new Date();
+    const age = today.getFullYear() - birthDateObj.getFullYear();
+    const monthDifference = today.getMonth() - birthDateObj.getMonth();
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDateObj.getDate())) {
+        age--;
+    }
+
+    if (age < 18) errors.birthDate = 'You must be at least 18 years old.';
+
+    if (Object.keys(errors).length > 0) {
+        return res.status(400).json({ errors });
+    }
+
     const newUser = new User({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        gender: req.body.gender,
-        birthDate: req.body.birthDate,
-        aadhaar: req.body.aadhaar,
-        username: req.body.username,
-        password: req.body.password
+        firstName,
+        lastName,
+        gender,
+        birthDate,
+        aadhaar,
+        username,
+        password
     });
+
     try {
         await newUser.save();
         console.log('User registered successfully');
-        res.redirect('/login.html');
+        res.sendStatus(200);
     } catch (err) {
+        if (err.code === 11000) {
+            // Duplicate key error
+            if (err.keyValue.aadhaar) errors.aadhaar = 'Aadhaar number already exists.';
+            if (err.keyValue.username) errors.username = 'Username already exists.';
+            return res.status(400).json({ errors });
+        }
         console.log('Error in registration:', err);
-        res.send('Error in registration.');
+        res.status(500).send('Error in registration.');
     }
 });
 
 app.post('/login', async (req, res) => {
-    console.log('Login endpoint hit');
-    const username = req.body.username;
-    const password = req.body.password;
+    const { username, password } = req.body;
     try {
-        const foundUser = await User.findOne({ username: username, password: password });
+        const foundUser = await User.findOne({ username, password });
         if (foundUser) {
             console.log('User logged in successfully');
             res.redirect('/voting.html');
         } else {
             console.log('Invalid username or password');
-            res.send('Invalid username or password.');
+            res.status(400).send('Invalid username or password.');
         }
     } catch (err) {
         console.log('Error in login:', err);
-        res.send('Error in login.');
+        res.status(500).send('Error in login.');
     }
 });
 
 app.post('/vote', async (req, res) => {
-    console.log('Vote endpoint hit');
-    const username = req.body.username;
-    const userVote = req.body.vote;
-
-    const newVote = new Vote({
-        username: username,
-        vote: userVote
-    });
+    const { username, vote } = req.body;
+    const newVote = new Vote({ username, vote });
     try {
         await newVote.save();
         console.log('Vote recorded successfully');
-        res.redirect(`/vote-confirmation?username=${encodeURIComponent(username)}&vote=${encodeURIComponent(userVote)}`);
+        res.redirect(`/vote-confirmation?username=${encodeURIComponent(username)}&vote=${encodeURIComponent(vote)}`);
     } catch (err) {
         console.log('Error in voting:', err);
-        res.send('Error in voting.');
+        res.status(500).send('Error in voting.');
     }
 });
 
 app.get('/vote-confirmation', (req, res) => {
-    const username = req.query.username;
-    const vote = req.query.vote;
-
+    const { username, vote } = req.query;
     res.send(`
         <!DOCTYPE html>
         <html lang="en">
@@ -106,27 +130,20 @@ app.get('/vote-confirmation', (req, res) => {
         <body>
             <h1 style="color: blueviolet;">Vote Confirmation</h1>
             <p>Thank you, ${username}. Your vote for <strong>${vote}</strong> has been recorded successfully.</p>
-            
         </body>
         </html>
     `);
 });
 
 app.get('/results', async (req, res) => {
-    console.log('Results endpoint hit');
     try {
         const results = await Vote.aggregate([
-            {
-                $group: {
-                    _id: "$vote",
-                    count: { $sum: 1 }
-                }
-            }
+            { $group: { _id: "$vote", count: { $sum: 1 } } }
         ]);
         res.json(results);
     } catch (err) {
         console.log('Error in fetching results:', err);
-        res.send('Error in fetching results.');
+        res.status(500).send('Error in fetching results.');
     }
 });
 
